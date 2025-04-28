@@ -1,14 +1,22 @@
 import './App.css'
-import { Box, Stack, Typography } from '@mui/material'
+import { Box, CircularProgress, Stack, Typography } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { LoginFormProps } from './data/interfaces/login'
 import { LoginForm } from './components/forms/Login'
+import { useQuery } from '@tanstack/react-query'
+import Condominium from './data/models/condominium'
+import { CondominiumItem } from './components/forms/CondominiumItem'
 
 function App() {
   const { t } = useTranslation()
+
+  const { data, isLoading } = useQuery({
+    queryKey: ['condominiums'],
+    queryFn: Condominium.getCondominiums,
+  })
 
   const validationSchema = z.object({
     email: z
@@ -40,8 +48,13 @@ function App() {
         width: '100%',
         boxSizing: 'border-box',
         overflow: 'hidden',
+        flexDirection: 'column',
       }}
     >
+      <Stack border="1px solid #ccc" padding={2}>
+        <Typography>{t('multi_condominiums')}</Typography>
+      </Stack>
+
       <Stack
         sx={{
           flex: 1,
@@ -63,7 +76,25 @@ function App() {
             onSubmit={methods.handleSubmit((values) => handleSubmit(values))}
           />
         </Stack>
-        <Typography>{t('multi_condominiums')}</Typography>
+
+        <Stack
+          sx={{
+            width: '70%',
+            height: '90svh',
+            overflowY: 'auto',
+            flexFlow: 'row wrap',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          {isLoading ? (
+            <CircularProgress />
+          ) : (
+            data?.map((condominium) => (
+              <CondominiumItem condominium={condominium} />
+            ))
+          )}
+        </Stack>
       </Stack>
     </Box>
   )
