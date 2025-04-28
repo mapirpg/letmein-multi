@@ -1,0 +1,10 @@
+{
+  "multi_condominiums": "Multicondomínios",
+  "password_min_length": "A senha deve ter pelo menos 6 caracteres",
+  "invalid_email": "E-mail inválido",
+  "email_required": "E-mail é obrigatório",
+  "password_required": "Senha é obrigatória",
+  "email": "E-mail",
+  "password": "Senha",
+  "login": "Entrar"
+}
