@@ -1,16 +1,30 @@
 import { Controller, UseFormReturn } from 'react-hook-form'
 import { LoginFormProps } from '../../data/interfaces/login'
-import { Button, TextField, TextFieldProps } from '@mui/material'
+import {
+  Button,
+  Stack,
+  TextField,
+  TextFieldProps,
+  Typography,
+  useTheme,
+} from '@mui/material'
 import { useTranslation } from 'react-i18next'
+import { ICondominium } from '../../data/interfaces/condominium'
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 
 export const LoginForm = ({
   methods,
   onSubmit,
+  condominium,
 }: {
-  methods: UseFormReturn<LoginFormProps, unknown, LoginFormProps>
   onSubmit: () => void
+  condominium?: ICondominium
+  methods: UseFormReturn<LoginFormProps, unknown, LoginFormProps>
 }) => {
   const { t } = useTranslation()
+  const {
+    palette: { primary },
+  } = useTheme()
 
   const defaultInputProps: Partial<TextFieldProps> = {
     autoComplete: 'off',
@@ -53,17 +67,58 @@ export const LoginForm = ({
           />
         )}
       />
-      <Button
-        variant="contained"
+
+      <Stack
         sx={{
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
           mt: 2,
-          width: '40%',
-          alignSelf: 'flex-end',
         }}
-        onClick={onSubmit}
       >
-        {t('login')}
-      </Button>
+        {condominium ? (
+          <Stack
+            sx={{
+              width: '100%',
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: 1,
+            }}
+          >
+            <ArrowForwardIosIcon
+              sx={{
+                color: primary.dark,
+              }}
+            />
+            <Typography
+              variant="h6"
+              color="primary.dark"
+              sx={{
+                wordBreak: 'break-word',
+                maxWidth: '60%',
+                flexShrink: 1,
+              }}
+            >
+              {condominium?.name}
+            </Typography>
+          </Stack>
+        ) : (
+          <Stack />
+        )}
+
+        <Button
+          variant="contained"
+          sx={{
+            width: '40%',
+          }}
+          onClick={onSubmit}
+        >
+          {t('login')}
+        </Button>
+      </Stack>
     </>
   )
 }

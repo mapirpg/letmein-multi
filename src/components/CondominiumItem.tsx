@@ -38,6 +38,7 @@ export const CondominiumItem = ({
           ? {
               border: `1px solid ${primary.main}`,
               boxShadow: `0px 0px 10px ${primary.main}90`,
+              bgcolor: `${primary.main}50`,
             }
           : {
               ':hover': {
@@ -50,7 +51,13 @@ export const CondominiumItem = ({
       }}
       {...props}
     >
-      <Typography variant="body1">{condominium.name}</Typography>
+      <Typography
+        variant="body1"
+        fontWeight="bold"
+        color={isSelected ? primary.dark : primary.main}
+      >
+        {condominium.name}
+      </Typography>
       <Stack
         sx={{
           width: '50%',

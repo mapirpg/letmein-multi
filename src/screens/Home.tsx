@@ -12,12 +12,11 @@ import Condominium from '../data/models/condominium'
 import { CondominiumItem } from '../components/CondominiumItem'
 import { ICondominium } from '../data/interfaces/condominium'
 import { Header } from '../components/Header'
+import Logo from '../assets/logo.png'
 
 function Home() {
   const { t } = useTranslation()
-  const [selectedItem, setSelectedItem] = React.useState<ICondominium | null>(
-    null
-  )
+  const [selectedItem, setSelectedItem] = React.useState<ICondominium>()
 
   const { data, isLoading } = useQuery({
     queryKey: ['condominiums'],
@@ -46,7 +45,13 @@ function Home() {
   })
 
   return (
-    <Box sx={{ height: '100%', position: 'relative', overflow: 'hidden' }}>
+    <Box
+      sx={{
+        height: '100%',
+        position: 'relative',
+        overflow: 'hidden',
+      }}
+    >
       <Box
         sx={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 100 }}
       >
@@ -81,8 +86,22 @@ function Home() {
               justifyContent: 'center',
             }}
           >
+            <Stack
+              sx={{
+                width: '30svw',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                position: 'absolute',
+                top: '20svh',
+              }}
+            >
+              <img src={Logo} width={'50%'} alt="Logo" />
+            </Stack>
+
             <LoginForm
               methods={methods}
+              condominium={selectedItem}
               onSubmit={methods.handleSubmit((values) => handleSubmit(values))}
             />
           </Stack>
@@ -97,6 +116,7 @@ function Home() {
               justifyContent: 'center',
               mt: '-5svh',
               pt: '5svh',
+              pb: '10svh',
             }}
           >
             {isLoading ? (
