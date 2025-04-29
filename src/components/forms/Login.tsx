@@ -2,6 +2,7 @@ import { Controller, UseFormReturn } from 'react-hook-form'
 import { LoginFormProps } from '../../data/interfaces/login'
 import {
   Button,
+  Fade,
   Stack,
   TextField,
   TextFieldProps,
@@ -93,17 +94,19 @@ export const LoginForm = ({
                 color: primary.dark,
               }}
             />
-            <Typography
-              variant="h6"
-              color="primary.dark"
-              sx={{
-                wordBreak: 'break-word',
-                maxWidth: '60%',
-                flexShrink: 1,
-              }}
-            >
-              {condominium?.name}
-            </Typography>
+            <Fade key={condominium?.id} in timeout={2000}>
+              <Typography
+                variant="h6"
+                color="primary.dark"
+                sx={{
+                  wordBreak: 'break-word',
+                  maxWidth: '60%',
+                  flexShrink: 1,
+                }}
+              >
+                {condominium?.name}
+              </Typography>
+            </Fade>
           </Stack>
         ) : (
           <Stack />
