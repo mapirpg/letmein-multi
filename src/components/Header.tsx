@@ -5,12 +5,12 @@ export const Header = () => {
   const { t } = useTranslation()
   return (
     <Stack
-      sx={() => ({
+      sx={(theme) => ({
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        bgcolor: 'rgba(0, 0, 0, 0.5)',
+        bgcolor: `${theme.palette.primary.dark}d9`,
         backdropFilter: 'blur(10px)',
         height: '15svh',
         zIndex: 100,
