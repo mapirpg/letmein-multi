@@ -14,7 +14,7 @@ export const CondominiumItem = ({
   ...props
 }: CondominiumItemProps) => {
   const {
-    palette: { primary },
+    palette: { primary, background },
   } = useTheme()
 
   return (
@@ -25,18 +25,20 @@ export const CondominiumItem = ({
       }}
       key={condominium.id}
       sx={{
-        margin: 4,
-        padding: 3,
+        margin: 3,
+        p: 0.5,
         width: '10svw',
         height: '10svw',
         borderRadius: 1,
         display: 'flex',
         alignItems: 'center',
+        justifyContent: 'center',
+        cursor: 'pointer',
         flexDirection: 'column',
         transition: 'all 0.2s ease-in-out',
-        ...(isSelected
+        ...(!isSelected
           ? {
-              border: `1px solid ${primary.main}`,
+              border: `2px solid ${background.paper}`,
               boxShadow: `0px 0px 10px ${primary.main}90`,
               bgcolor: `${primary.main}50`,
             }
@@ -54,21 +56,33 @@ export const CondominiumItem = ({
       <Typography
         variant="body1"
         fontWeight="bold"
-        color={isSelected ? primary.dark : primary.main}
+        color={!isSelected ? 'background.paper' : primary.main}
+        textAlign="center"
       >
         {condominium.name}
       </Typography>
       <Stack
         sx={{
-          width: '50%',
-          height: '50%',
+          width: '80%',
+          height: '60%',
           display: 'flex',
-          marginTop: '20%',
+          marginTop: 1,
           alignItems: 'center',
           justifyContent: 'center',
+          overflow: 'hidden',
         }}
       >
-        <img src={condominium.image} alt={condominium.title} width={'100%'} />
+        <img
+          src={condominium.image}
+          alt={condominium.name}
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'contain',
+            maxWidth: '100%',
+            maxHeight: '100%',
+          }}
+        />
       </Stack>
     </Card>
   )

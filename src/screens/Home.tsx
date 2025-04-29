@@ -13,14 +13,22 @@ import { CondominiumItem } from '../components/CondominiumItem'
 import { ICondominium } from '../data/interfaces/condominium'
 import { Header } from '../components/Header'
 import Logo from '../assets/logo.png'
+import Background from '../assets/login_background.jpg'
 
 function Home() {
   const { t } = useTranslation()
   const [selectedItem, setSelectedItem] = React.useState<ICondominium>()
+  const [search, setSearch] = React.useState<string>('')
 
   const { data, isLoading } = useQuery({
     queryKey: ['condominiums'],
     queryFn: Condominium.getCondominiums,
+    select: (data) =>
+      search
+        ? data.filter((condominium) =>
+            condominium?.name?.toLowerCase().includes(search.toLowerCase())
+          )
+        : data,
   })
 
   const validationSchema = z.object({
@@ -55,7 +63,37 @@ function Home() {
       <Box
         sx={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 100 }}
       >
-        <Header />
+        <Header onSearch={setSearch} />
+      </Box>
+
+      <Box
+        sx={({ palette: { background } }) => ({
+          position: 'absolute',
+          bottom: 0,
+          right: 0,
+          zIndex: -1,
+          width: '66svw',
+          height: '100%',
+          '&::after': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: `linear-gradient(to right, ${background.default} 0%, transparent 30%)`,
+            pointerEvents: 'none',
+          },
+        })}
+      >
+        <img
+          src={Background}
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+          }}
+        />
       </Box>
 
       <Box

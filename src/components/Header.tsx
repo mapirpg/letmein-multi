@@ -1,7 +1,12 @@
-import { Stack, Typography } from '@mui/material'
+import { Stack, TextField, Typography } from '@mui/material'
 import { useTranslation } from 'react-i18next'
+import SearchIcon from '@mui/icons-material/Search'
 
-export const Header = () => {
+export const Header = ({
+  onSearch,
+}: {
+  onSearch?: (value: string) => void
+}) => {
   const { t } = useTranslation()
   return (
     <Stack
@@ -27,6 +32,35 @@ export const Header = () => {
       >
         {t('multi_condominiums')}
       </Typography>
+
+      <Stack
+        sx={{
+          width: '30%',
+          right: '2svw',
+          position: 'absolute',
+        }}
+      >
+        <TextField
+          type="search"
+          variant="outlined"
+          slotProps={{
+            input: {
+              sx: ({ palette }) => ({
+                color: palette.background.default,
+              }),
+              startAdornment: (
+                <SearchIcon
+                  sx={{
+                    color: 'background.default',
+                    mr: 1,
+                  }}
+                />
+              ),
+            },
+          }}
+          onChange={(e) => onSearch?.(e.target.value)}
+        />
+      </Stack>
     </Stack>
   )
 }
