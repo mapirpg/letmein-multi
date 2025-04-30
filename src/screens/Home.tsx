@@ -1,69 +1,27 @@
 import React from 'react'
 import '../style/Home.css'
 import { Box, CircularProgress, Stack } from '@mui/material'
-import { useTranslation } from 'react-i18next'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
-import { LoginFormProps } from '../data/interfaces/login'
+
 import { LoginForm } from '../components/forms/Login'
-import { useQuery } from '@tanstack/react-query'
-import Condominium from '../data/models/condominium'
 import { CondominiumItem } from '../components/CondominiumItem'
 import { ICondominium } from '../data/interfaces/condominium'
-import { Header } from '../components/Header'
+import { HomeHeader } from '../components/HomeHeader'
 import Logo from '../assets/logo.png'
 import Background from '../assets/login_background.jpg'
+import { Container } from '../components/Container'
+import { useLoginMethods } from '../data/methods/login'
 
 function Home() {
-  const { t } = useTranslation()
+  const { submit, setSearch, condominiums, isLoading, ...methods } =
+    useLoginMethods()
   const [selectedItem, setSelectedItem] = React.useState<ICondominium>()
-  const [search, setSearch] = React.useState<string>('')
-
-  const { data, isLoading } = useQuery({
-    queryKey: ['condominiums'],
-    queryFn: Condominium.getCondominiums,
-    select: (data) =>
-      search
-        ? data.filter((condominium) =>
-            condominium?.name?.toLowerCase().includes(search.toLowerCase())
-          )
-        : data,
-  })
-
-  const validationSchema = z.object({
-    email: z
-      .string()
-      .email({ message: t('invalid_email') })
-      .min(1, { message: t('email_required') }),
-    password: z.string().min(6, { message: t('password_min_length') }),
-  })
-
-  const handleSubmit = async (data: LoginFormProps) => {
-    console.log('Form submitted:', data)
-  }
-
-  const methods = useForm<LoginFormProps>({
-    defaultValues: {
-      email: '',
-      password: '',
-    },
-    mode: 'onChange',
-    resolver: zodResolver(validationSchema),
-  })
 
   return (
-    <Box
-      sx={{
-        height: '100%',
-        position: 'relative',
-        overflow: 'hidden',
-      }}
-    >
+    <Container>
       <Box
         sx={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 100 }}
       >
-        <Header onSearch={setSearch} />
+        <HomeHeader onSearch={setSearch} />
       </Box>
 
       <Box
@@ -139,8 +97,9 @@ function Home() {
 
             <LoginForm
               methods={methods}
+              showSelectedCondominium
               condominium={selectedItem}
-              onSubmit={methods.handleSubmit((values) => handleSubmit(values))}
+              onSubmit={methods.handleSubmit((values) => submit(values))}
             />
           </Stack>
 
@@ -160,7 +119,7 @@ function Home() {
             {isLoading ? (
               <CircularProgress />
             ) : (
-              data?.map((condominium) => (
+              condominiums?.map((condominium) => (
                 <CondominiumItem
                   key={condominium.id}
                   condominium={condominium}
@@ -172,7 +131,7 @@ function Home() {
           </Stack>
         </Stack>
       </Box>
-    </Box>
+    </Container>
   )
 }
 

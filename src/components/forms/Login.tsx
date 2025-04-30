@@ -2,6 +2,7 @@ import { Controller, UseFormReturn } from 'react-hook-form'
 import { LoginFormProps } from '../../data/interfaces/login'
 import {
   Button,
+  ButtonProps,
   Fade,
   Stack,
   TextField,
@@ -17,10 +18,18 @@ export const LoginForm = ({
   methods,
   onSubmit,
   condominium,
+  buttonProps,
+  emailInputProps,
+  passwordInputProps,
+  showSelectedCondominium,
 }: {
   onSubmit: () => void
   condominium?: ICondominium
   methods: UseFormReturn<LoginFormProps, unknown, LoginFormProps>
+  buttonProps?: ButtonProps
+  emailInputProps?: TextFieldProps
+  passwordInputProps?: TextFieldProps
+  showSelectedCondominium?: boolean
 }) => {
   const { t } = useTranslation()
   const {
@@ -49,6 +58,7 @@ export const LoginForm = ({
             error={!!methods.formState.errors.email}
             helperText={methods.formState.errors.email?.message}
             {...defaultInputProps}
+            {...emailInputProps}
           />
         )}
       />
@@ -65,6 +75,7 @@ export const LoginForm = ({
             error={!!methods.formState.errors.password}
             helperText={methods.formState.errors.password?.message}
             {...defaultInputProps}
+            {...passwordInputProps}
           />
         )}
       />
@@ -79,7 +90,7 @@ export const LoginForm = ({
           mt: 2,
         }}
       >
-        {condominium ? (
+        {condominium && showSelectedCondominium ? (
           <Stack
             sx={{
               width: '100%',
@@ -116,10 +127,12 @@ export const LoginForm = ({
           variant="contained"
           sx={{
             width: '40%',
+            ...buttonProps?.sx,
           }}
+          {...buttonProps}
           onClick={onSubmit}
         >
-          {t('login')}
+          {t('to_enter')}
         </Button>
       </Stack>
     </>

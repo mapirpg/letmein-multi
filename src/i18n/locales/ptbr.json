@@ -6,6 +6,12 @@
   "password_required": "Senha é obrigatória",
   "email": "E-mail",
   "password": "Senha",
-  "login": "Entrar",
-  "to_search": "Buscar"
+  "login": "Login",
+  "to_search": "Buscar",
+  "welcome_to": "Bem-vindo ao",
+  "brand_multi_condominiums": "Letmein Multicondomínios",
+  "select_condomínio_want_access": "Selecione o condomínio que deseja acessar",
+  "condominium": "Condomínio",
+  "to_enter": "Entrar",
+  "forgot_password": "Esqueci minha senha"
 }
