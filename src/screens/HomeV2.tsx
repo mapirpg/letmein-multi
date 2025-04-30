@@ -17,7 +17,7 @@ import { ICondominium } from '../data/interfaces/condominium'
 
 function HomeV2() {
   const { t } = useTranslation()
-  const { condominiums, submit, ...methods } = useLoginMethods()
+  const { condominiums, submit, isLoading, ...methods } = useLoginMethods()
   const [selectedItem, setSelectedItem] = React.useState<ICondominium>()
 
   return (
@@ -107,6 +107,7 @@ function HomeV2() {
           </Box>
 
           <Autocomplete
+            disabled={isLoading}
             options={condominiums || []}
             getOptionLabel={(option) => option.name}
             sx={{
@@ -115,6 +116,37 @@ function HomeV2() {
                 color: 'background.default',
               },
             }}
+            renderOption={(props, option) => (
+              <Box
+                onClick={props.onClick}
+                component="li"
+                key={option.id}
+                sx={{
+                  height: '5svh',
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  ':hover': {
+                    backgroundColor: 'primary.main',
+                    color: 'background.default',
+                  },
+                  ml: 1,
+                  px: 2,
+                  overflow: 'auto',
+                  borderRadius: '4px',
+                }}
+              >
+                <Typography>{option?.name}</Typography>
+                <img
+                  width={40}
+                  src={option?.image}
+                  style={{
+                    borderRadius: '4px',
+                  }}
+                />
+              </Box>
+            )}
             renderInput={(params) => (
               <TextField
                 {...params}
