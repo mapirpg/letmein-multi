@@ -1,3 +1,4 @@
+import React from 'react'
 import {
   Autocomplete,
   Box,
@@ -7,25 +8,25 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
-import { ICondominium } from '../data/interfaces/condominium'
-import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+
+import { ICondominium } from '../data/interfaces/condominium'
 
 interface CondominiumsAutocompleteProps extends StackProps {
   condominiums?: ICondominium[]
-  onItemChange?: (item?: ICondominium) => void
+  selectedItem?: ICondominium
+  setSelectedItem?: React.Dispatch<
+    React.SetStateAction<ICondominium | undefined>
+  >
 }
 
 export const CondominiumsAutocomplete = ({
   condominiums,
-  onItemChange,
+  selectedItem,
+  setSelectedItem,
   ...props
 }: CondominiumsAutocompleteProps) => {
   const { t } = useTranslation()
-
-  const [selectedItem, setSelectedItem] = React.useState<ICondominium>()
-
-  useEffect(() => onItemChange?.(selectedItem), [onItemChange, selectedItem])
 
   return (
     <Stack
@@ -96,7 +97,7 @@ export const CondominiumsAutocomplete = ({
             }}
           />
         )}
-        onChange={(_, newValue) => setSelectedItem(newValue || undefined)}
+        onChange={(_, newValue) => setSelectedItem?.(newValue || undefined)}
       />
 
       {selectedItem && (

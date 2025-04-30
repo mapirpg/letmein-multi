@@ -1,6 +1,6 @@
-import { Stack, TextField, Typography } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import SearchIcon from '@mui/icons-material/Search'
+import { Stack, TextField, Typography } from '@mui/material'
 
 export const HomeHeader = ({
   onSearch,

@@ -1,4 +1,4 @@
-import { Box, Fade, Stack, Typography, CircularProgress } from '@mui/material'
+import { Box, Fade, Stack, Typography } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 
 import Logo from '../assets/logo.png'
@@ -6,13 +6,11 @@ import { Container } from '../components/Container'
 import { LoginForm } from '../components/forms/Login'
 import Background from '../assets/login_background.jpg'
 import { useLoginMethods } from '../data/methods/login'
-import { CondominiumsAutocomplete } from '../components/CondominiumsAutocomplete'
 
-function HomeV2() {
+function HomeV3() {
   const { t } = useTranslation()
   const {
     onSubmit,
-    isLoading,
     condominiums,
     selectedCondominium,
     setSelectedCondominium,
@@ -38,16 +36,20 @@ function HomeV2() {
             justifyContent: 'center',
           }}
         >
-          <img src={Logo} width={'50%'} alt="Logo" />
+          <img src={Logo} width={'40%'} alt="Logo" />
           <Stack sx={{ width: '60%' }}>
             <Typography variant="h4" mb={4} mt={6}>
               {t('login')}
             </Typography>
 
             <LoginForm
+              condominiums={condominiums}
+              setSelectedCondominium={setSelectedCondominium}
+              includeSelectedCondominium
               buttonProps={{
                 sx: {
                   width: '100%',
+                  mt: '5svh',
                 },
               }}
               emailInputProps={{
@@ -98,34 +100,26 @@ function HomeV2() {
             >
               {t('brand_multi_condominiums')}
             </Typography>
-
-            <Typography color="background.default" variant="h5" mt={6}>
-              {t('select_condomínio_want_access')}
-            </Typography>
           </Box>
 
-          {isLoading ? (
-            <Stack
-              sx={{
-                display: 'flex',
-                flex: 1,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <CircularProgress
+          {selectedCondominium && (
+            <Fade key={selectedCondominium?.id} in timeout={1000}>
+              <Stack
                 sx={{
-                  color: 'background.default',
+                  display: 'flex',
+                  flex: 1,
+                  alignItems: 'center',
+                  justifyContent: 'center',
                 }}
-              />
-            </Stack>
-          ) : (
-            <Fade key={String(isLoading)} in timeout={500}>
-              <CondominiumsAutocomplete
-                condominiums={condominiums}
-                selectedItem={selectedCondominium}
-                setSelectedItem={setSelectedCondominium}
-              />
+              >
+                <img
+                  src={selectedCondominium.image}
+                  style={{
+                    width: '50%',
+                    borderRadius: '8px',
+                  }}
+                />
+              </Stack>
             </Fade>
           )}
         </Stack>
@@ -134,4 +128,4 @@ function HomeV2() {
   )
 }
 
-export default HomeV2
+export default HomeV3

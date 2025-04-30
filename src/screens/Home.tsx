@@ -1,22 +1,26 @@
-import React from 'react'
 import '../style/Home.css'
+import { useTranslation } from 'react-i18next'
 import { Box, CircularProgress, Fade, Stack, Typography } from '@mui/material'
 
-import { LoginForm } from '../components/forms/Login'
-import { CondominiumItem } from '../components/CondominiumItem'
-import { ICondominium } from '../data/interfaces/condominium'
-import { HomeHeader } from '../components/HomeHeader'
 import Logo from '../assets/logo.png'
-import Background from '../assets/login_background.jpg'
 import { Container } from '../components/Container'
+import { HomeHeader } from '../components/HomeHeader'
+import { LoginForm } from '../components/forms/Login'
 import { useLoginMethods } from '../data/methods/login'
-import { useTranslation } from 'react-i18next'
+import Background from '../assets/login_background.jpg'
+import { CondominiumItem } from '../components/CondominiumItem'
 
 function Home() {
   const { t } = useTranslation()
-  const { submit, setSearch, condominiums, isLoading, ...methods } =
-    useLoginMethods()
-  const [selectedItem, setSelectedItem] = React.useState<ICondominium>()
+  const {
+    setSearch,
+    condominiums,
+    isLoading,
+    onSubmit,
+    selectedCondominium,
+    setSelectedCondominium,
+    ...methods
+  } = useLoginMethods()
 
   return (
     <Container>
@@ -99,9 +103,16 @@ function Home() {
 
             <LoginForm
               methods={methods}
+              onSubmit={onSubmit}
               showSelectedCondominium
-              condominium={selectedItem}
-              onSubmit={methods.handleSubmit((values) => submit(values))}
+              condominium={selectedCondominium}
+              forgotPasswordProps={{
+                sx: {
+                  left: '5svw',
+                  bottom: '5svh',
+                  position: 'absolute',
+                },
+              }}
             />
           </Stack>
 
@@ -146,8 +157,8 @@ function Home() {
                     <CondominiumItem
                       key={condominium.id}
                       condominium={condominium}
-                      onPress={setSelectedItem}
-                      isSelected={selectedItem?.id === condominium.id}
+                      onPress={setSelectedCondominium}
+                      isSelected={selectedCondominium?.id === condominium.id}
                     />
                   ))}
                 </Stack>

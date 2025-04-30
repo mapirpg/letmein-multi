@@ -1,35 +1,49 @@
-import { Controller, UseFormReturn } from 'react-hook-form'
-import { LoginFormProps } from '../../data/interfaces/login'
 import {
-  Button,
-  ButtonProps,
   Fade,
   Stack,
-  TextField,
-  TextFieldProps,
-  Typography,
+  Button,
   useTheme,
+  TextField,
+  Typography,
+  ButtonProps,
+  TextFieldProps,
+  Autocomplete,
+  Link,
+  LinkProps,
 } from '@mui/material'
+import { Controller } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { ICondominium } from '../../data/interfaces/condominium'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
+
+import { UseLoginMethodsProps } from '../../data/methods/login'
+import { ICondominium } from '../../data/interfaces/condominium'
 
 export const LoginForm = ({
   methods,
   onSubmit,
   condominium,
   buttonProps,
+  condominiums,
   emailInputProps,
   passwordInputProps,
+  forgotPasswordProps,
+  setSelectedCondominium,
   showSelectedCondominium,
+  includeSelectedCondominium,
 }: {
   onSubmit: () => void
-  condominium?: ICondominium
-  methods: UseFormReturn<LoginFormProps, unknown, LoginFormProps>
   buttonProps?: ButtonProps
+  condominium?: ICondominium
   emailInputProps?: TextFieldProps
-  passwordInputProps?: TextFieldProps
   showSelectedCondominium?: boolean
+  passwordInputProps?: TextFieldProps
+  methods: Partial<UseLoginMethodsProps>
+  setSelectedCondominium?: React.Dispatch<
+    React.SetStateAction<ICondominium | undefined>
+  >
+  includeSelectedCondominium?: boolean
+  condominiums?: ICondominium[]
+  forgotPasswordProps?: LinkProps
 }) => {
   const { t } = useTranslation()
   const {
@@ -55,8 +69,8 @@ export const LoginForm = ({
             label={t('email')}
             variant="outlined"
             {...field}
-            error={!!methods.formState.errors.email}
-            helperText={methods.formState.errors.email?.message}
+            error={!!methods?.formState?.errors.email}
+            helperText={methods?.formState?.errors.email?.message}
             {...defaultInputProps}
             {...emailInputProps}
           />
@@ -72,13 +86,29 @@ export const LoginForm = ({
             label={t('password')}
             variant="outlined"
             {...field}
-            error={!!methods.formState.errors.password}
-            helperText={methods.formState.errors.password?.message}
+            error={!!methods?.formState?.errors.password}
+            helperText={methods?.formState?.errors.password?.message}
             {...defaultInputProps}
             {...passwordInputProps}
           />
         )}
       />
+
+      {includeSelectedCondominium && (
+        <Autocomplete
+          options={condominiums || []}
+          getOptionLabel={(option) => option.name}
+          onChange={(_, value) => setSelectedCondominium?.(value || undefined)}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label={t('condominuim')}
+              variant="outlined"
+              size="medium"
+            />
+          )}
+        />
+      )}
 
       <Stack
         sx={{
@@ -135,6 +165,9 @@ export const LoginForm = ({
           {t('to_enter')}
         </Button>
       </Stack>
+      <Link alignSelf={'center'} mt={6} {...forgotPasswordProps}>
+        {t('forgot_password')}
+      </Link>
     </>
   )
 }

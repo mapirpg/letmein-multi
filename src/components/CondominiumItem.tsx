@@ -1,16 +1,17 @@
 import { Card, CardProps, Stack, Typography, useTheme } from '@mui/material'
+
 import { ICondominium } from '../data/interfaces/condominium'
 
 interface CondominiumItemProps extends CardProps {
+  isSelected?: boolean
   condominium: ICondominium
   onPress?: (item: ICondominium) => void
-  isSelected?: boolean
 }
 
 export const CondominiumItem = ({
-  condominium,
   onPress,
   isSelected,
+  condominium,
   ...props
 }: CondominiumItemProps) => {
   const {
