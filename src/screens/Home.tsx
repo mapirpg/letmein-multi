@@ -1,6 +1,6 @@
 import React from 'react'
 import '../style/Home.css'
-import { Box, CircularProgress, Stack } from '@mui/material'
+import { Box, CircularProgress, Fade, Stack, Typography } from '@mui/material'
 
 import { LoginForm } from '../components/forms/Login'
 import { CondominiumItem } from '../components/CondominiumItem'
@@ -10,8 +10,10 @@ import Logo from '../assets/logo.png'
 import Background from '../assets/login_background.jpg'
 import { Container } from '../components/Container'
 import { useLoginMethods } from '../data/methods/login'
+import { useTranslation } from 'react-i18next'
 
 function Home() {
+  const { t } = useTranslation()
   const { submit, setSearch, condominiums, isLoading, ...methods } =
     useLoginMethods()
   const [selectedItem, setSelectedItem] = React.useState<ICondominium>()
@@ -117,16 +119,39 @@ function Home() {
             }}
           >
             {isLoading ? (
-              <CircularProgress />
+              <CircularProgress
+                sx={{
+                  color: 'background.default',
+                }}
+              />
+            ) : !condominiums?.length ? (
+              <Typography
+                textAlign={'right'}
+                variant="h3"
+                color="background.default"
+              >
+                {t('no_condominiums_found')}
+              </Typography>
             ) : (
-              condominiums?.map((condominium) => (
-                <CondominiumItem
-                  key={condominium.id}
-                  condominium={condominium}
-                  onPress={setSelectedItem}
-                  isSelected={selectedItem?.id === condominium.id}
-                />
-              ))
+              <Fade key={String(isLoading)} in timeout={1000}>
+                <Stack
+                  sx={{
+                    flexWrap: 'wrap',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  {condominiums?.map((condominium) => (
+                    <CondominiumItem
+                      key={condominium.id}
+                      condominium={condominium}
+                      onPress={setSelectedItem}
+                      isSelected={selectedItem?.id === condominium.id}
+                    />
+                  ))}
+                </Stack>
+              </Fade>
             )}
           </Stack>
         </Stack>

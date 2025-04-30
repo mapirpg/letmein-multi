@@ -13,5 +13,6 @@
   "select_condomínio_want_access": "Selecione o condomínio que deseja acessar",
   "condominium": "Condomínio",
   "to_enter": "Entrar",
-  "forgot_password": "Esqueci minha senha"
+  "forgot_password": "Esqueci minha senha",
+  "no_condominiums_found": "Nenhum condomínio encontrado"
 }

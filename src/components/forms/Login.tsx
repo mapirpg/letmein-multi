@@ -126,7 +126,7 @@ export const LoginForm = ({
         <Button
           variant="contained"
           sx={{
-            width: '40%',
+            minWidth: '40%',
             ...buttonProps?.sx,
           }}
           {...buttonProps}
